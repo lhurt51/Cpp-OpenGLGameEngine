@@ -1,0 +1,3 @@
+3D Game Engine:
+- Need to find a way to make a game engine editor
+- Test cross-platform ability
