@@ -30,7 +30,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 # Set the compiler to clang++ if not visual studio
 if (!MSVC)
 	set(CMAKE_CXX_COMPILER clang++)
-endif()
+endif(!MSVC)
 
 # Setting the project to cxx_std_11
 set(CMAKE_CXX_STANDARD 11)
@@ -49,7 +49,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
 				"Choose the type of build, options are: None (CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) \"Debug\" \"Release\" \"RelWithDebInfo\" \"MinSizeRel\"."
 		FORCE
 )
-endif (CMAKE_BUILD_TYPE STREQUAL "")
+endif ()
 
 # Lets LOAD app our headers!
 file(GLOB_RECURSE HDRS CONFIGURE_DEPENDS
@@ -81,10 +81,9 @@ foreach(FILE ${SRCS} ${HDRS})
     endif()
 
     source_group("${GROUP}" FILES "${FILE}")
-endforeach()
+endforeach(FILE ${SRCS} ${HDRS})
 
 include_directories (.)
-add_subdirectory(tests)
 
 # Define the executable
 add_executable(${PROJECT_NAME} ${HDRS} ${SRCS})
