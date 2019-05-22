@@ -1,17 +1,12 @@
-#include "Game\Game.hpp"
-
 #include <iostream>
-#include <GL/glew.h>
-#include <SDL.h>
-#include <assimp\Importer.hpp>
-#include <assimp\scene.h>
-#include <assimp\postprocess.h>
+#include "Core/Common.hpp"
 
 #undef main
 
 int main(int argc, char** argv)
 {
-	Game game;
+
+	std::cout << "Starting" << std::endl;
 
 #ifdef TESTCODE
 	std::cout << "Test" << std::endl;

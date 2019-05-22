@@ -33,8 +33,8 @@ if (!MSVC)
 endif(!MSVC)
 
 # Setting the project to cxx_std_11
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED on)
+#set(CMAKE_CXX_STANDARD 11)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Name and Version of the project
 project(3DEngineOpenGL LANGUAGES CXX)
@@ -94,7 +94,7 @@ endif (CMAKE_BUILD_TYPE STREQUAL "Release")
 
 # Checking if it is in visual studio for correct errors flags
 if (MSVC)
-	target_compile_options(${PROJECT_NAME} PRIVATE /W4)
+	target_compile_options(${PROJECT_NAME} PRIVATE /W4 /std:c++14)
 else()
 	target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wpedantic)
 endif()
