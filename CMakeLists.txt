@@ -33,8 +33,8 @@ if (!MSVC)
 endif(!MSVC)
 
 # Setting the project to cxx_std_11
-#set(CMAKE_CXX_STANDARD 11)
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# set(CMAKE_CXX_STANDARD 11)
+# set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Name and Version of the project
 project(3DEngineOpenGL LANGUAGES CXX)
@@ -88,15 +88,20 @@ include_directories (.)
 # Define the executable
 add_executable(${PROJECT_NAME} ${HDRS} ${SRCS})
 
+set_property (TARGET ${PROJECT_NAME} PROPERTY
+  PUBLIC
+    CXX_STANDARD 17
+)
+
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
 	target_compile_options(${PROJECT_NAME} -02)
 endif (CMAKE_BUILD_TYPE STREQUAL "Release")
 
 # Checking if it is in visual studio for correct errors flags
 if (MSVC)
-	target_compile_options(${PROJECT_NAME} PRIVATE /W4 /std:c++14)
+	target_compile_options(${PROJECT_NAME} PUBLIC /W4)
 else()
-	target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Werror -Wpedantic)
+	target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror -Wpedantic)
 endif()
 
 # We need a CMake_Dir with some code to find external dependencies

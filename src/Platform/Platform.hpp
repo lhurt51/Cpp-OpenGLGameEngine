@@ -28,23 +28,23 @@
 #if defined(SIMD_CPU_ARCH_x86) || defined(SIMD_CPU_ARCH_x86_64)
 	#if defined(INSTRSET)
 		#define SIMD_SUPPORTED_LEVEL INSTRSET
-	#elif defined (__AVX2__)
+	#elif defined(__AVX2__)
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_x86_AVX2
-	#elif defined (__AVX__)
+	#elif defined(__AVX__)
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_x86_AVX
-	#elif defined (__SSE4_2__)
+	#elif defined(__SSE4_2__)
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_x86_SSE4_2
-	#elif defined (__SSE4_1__)
+	#elif defined(__SSE4_1__)
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_x86_SSE4_1
-	#elif defined (__SSSE3__)
+	#elif defined(__SSSE3__)
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_x86_SSSE3
-	#elif defined (__SSE3__)
+	#elif defined(__SSE3__)
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_x86_SSE3
-	#elif defined (__SSE2__)
+	#elif defined(__SSE2__)
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_x86_SSE2
-	#elif defined (__SSE__)
+	#elif defined(__SSE__)
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_x86_SSE
-	#elif defined (_M_IX86_FP)
+	#elif defined(_M_IX86_FP)
 		#define SIMD_SUPPORTED_LEVEL _M_IX86_FP
 	#else
 		#define SIMD_SUPPORTED_LEVEL SIMD_LEVEL_NONE
