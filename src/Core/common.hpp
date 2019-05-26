@@ -62,13 +62,16 @@ typedef uintptr_t				uintptr;
 	#define FORCEINLINE inline
 #endif
 
+#define CONSTEXPR constexpr
 
+/*
 #if __cplusplus < 201103L
 	#define nullptr NULL
 	#define CONSTEXPR
 #else
 	#define CONSTEXPR constexpr
 #endif
+*/
 
 #define NULL_COPY_AND_ASSIGN(T) \
 	T(const T& other) { (void)other; } \

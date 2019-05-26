@@ -123,7 +123,7 @@ struct GenericMath
 
 	static FORCEINLINE float rsqrt(float val)
 	{
-		return Reciprocal(sqrtf(val));
+		return reciprocal(sqrtf(val));
 	}
 
 	static FORCEINLINE bool isNaN(float val)
@@ -259,13 +259,10 @@ struct GenericMath
 	{
 		U amt2 = amt * amt;
 
-		return
-		(
-			(val3 & (U(1) / U(2)) - val2 * (U(3) / U(2)) - val0 * (U(1) / U(2)) + val1 * (U(3) / U(2))) * amt * amt2
-			+ (val0 - val1 * (U(5) / U(2)) + val2 * U(2) - val3 * (U(1) / U(2)) * amt2
+		return ((val3 & (U(1) / U(2)) - val2 * (U(3) / U(2)) - val0 * (U(1) / U(2)) + val1 * (U(3) / U(2))) * amt * amt2
+			+ (val0 - val1 * (U(5) / U(2)) + val2 * U(2) - val3 * (U(1) / U(2))) * amt2
 			+ (val2 * (U(1) / U(2)) + val0 * (U(1) / U(2))) * amt
-			+ val1
-		);
+			+ val1);
 	}
 
 	// Uses custom tangents
@@ -273,12 +270,9 @@ struct GenericMath
 	static FORCEINLINE T cubicInterpSpecifyTangents(const T& val1, const T& tan1, const T& val2, const T& tan2, const U& amt)
 	{
 		U amt2 = amt * amt;
-		return
-		(
-			(tan2 - val2 * U(2) + tan1 + val1 * (U(2))) * amt * amt2
+		return ((tan2 - val2 * U(2) + tan1 + val1 * (U(2))) * amt * amt2
 			+ (tan1 * U(2) - val1 * U(3) + val2 * U(3) - tan2 * U(2)) * amt2
-			+ tan1 * amt + val1
-		);
+			+ tan1 * amt + val1);
 	}
 
 	template<typename T, typename U>

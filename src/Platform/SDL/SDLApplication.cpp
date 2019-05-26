@@ -1,6 +1,6 @@
 #include "SDLApplication.hpp"
 
-#include <SDL2/include/SDL.h>
+#include <SDL.h>
 
 uint32 SDLApplication::numInstances = 0;
 
@@ -49,7 +49,7 @@ void SDLApplication::ProcessMessages(double delta)
 	}
 }
 
-void SDLApplication::IsRunning()
+bool SDLApplication::IsRunning()
 {
 	return bIsAppRunning;
 }

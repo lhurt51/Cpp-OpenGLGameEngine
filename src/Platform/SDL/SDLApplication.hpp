@@ -16,6 +16,6 @@ public:
 	virtual ~SDLApplication();
 
 	virtual void ProcessMessages(double delta);
-	virtual void IsRunning();
+	virtual bool IsRunning();
 
 };

@@ -41,7 +41,7 @@ void* GenericMemory::free(void* ptr)
 {
 	if (ptr)
 	{
-		::free(*((void**)((uintptr8*)ptr - sizeof(void*))));
+		::free(*((void**)((uint8*)ptr - sizeof(void*))));
 	}
 	return nullptr;
 }

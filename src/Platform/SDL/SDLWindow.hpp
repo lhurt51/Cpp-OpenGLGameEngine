@@ -4,7 +4,7 @@
 #include "../../Core/Application.hpp"
 #include "../../DataStructures/String.hpp"
 
-#include <SDL2/include/SDL.h>
+#include <SDL.h>
 
 typedef SDL_Window* WindowHandle;
 
