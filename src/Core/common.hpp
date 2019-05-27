@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <stdio.h>
+
 #include "../Platform/Platform.hpp"
 
 // Include known-size int files, based on compiler, some comilers need these files to be created manually
