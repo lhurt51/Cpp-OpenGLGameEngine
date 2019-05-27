@@ -54,6 +54,7 @@ endif ()
 # Lets LOAD app our headers!
 file(GLOB_RECURSE HDRS CONFIGURE_DEPENDS
 		${PROJECT_SOURCE_DIR}/src/*.h
+		${PROJECT_SOURCE_DIR}/src/*.hpp
 )
 
 # Lets LOAD app our sources!
@@ -75,7 +76,11 @@ foreach(FILE ${SRCS} ${HDRS})
     # Group into "Source Files" and "Header Files"
     if ("${FILE}" MATCHES ".*\\.cpp")
        set(GROUP "Source Files${GROUP}")
+	elseif ("${FILE}" MATCHES ".*\\.c")
+       set(GROUP "Source Files${GROUP}")
     elseif("${FILE}" MATCHES ".*\\.h")
+       set(GROUP "Header Files${GROUP}")
+	elseif("${FILE}" MATCHES ".*\\.hpp")
        set(GROUP "Header Files${GROUP}")
     endif()
 
