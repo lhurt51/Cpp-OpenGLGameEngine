@@ -2,8 +2,6 @@
 
 #include <cassert>
 #include <stdio.h>
-#include <stdexcept>
-
 #include "../Platform/Platform.hpp"
 
 // Include known-size int files, based on compiler, some comilers need these files to be created manually
@@ -62,6 +60,7 @@ typedef uintptr_t				uintptr;
 	#define FORCEINLINE inline
 #endif
 
+// For some reason __cplusplus predefinition does not work properly
 #define CONSTEXPR constexpr
 
 /*

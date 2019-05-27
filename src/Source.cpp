@@ -1,7 +1,9 @@
 #include <iostream>
 #include "Core/Common.hpp"
 
-#undef main
+#ifdef main
+	#undef main
+#endif
 
 int main(int argc, char** argv)
 {

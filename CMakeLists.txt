@@ -53,7 +53,6 @@ endif ()
 
 # Lets LOAD app our headers!
 file(GLOB_RECURSE HDRS CONFIGURE_DEPENDS
-		${PROJECT_SOURCE_DIR}/src/*.hpp
 		${PROJECT_SOURCE_DIR}/src/*.h
 )
 
@@ -85,6 +84,17 @@ endforeach(FILE ${SRCS} ${HDRS})
 
 include_directories (.)
 
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+	add_compile_options(${PROJECT_NAME} -02)
+endif (CMAKE_BUILD_TYPE STREQUAL "Release")
+
+# Checking if it is in visual studio for correct errors flags
+if (MSVC)
+	add_compile_options(-c -W4)
+else()
+	add_compile_options(-c -Wall -Wextra -Werror -Wpedantic)
+endif()
+
 # Define the executable
 add_executable(${PROJECT_NAME} ${HDRS} ${SRCS})
 
@@ -93,16 +103,16 @@ set_property (TARGET ${PROJECT_NAME} PROPERTY
     CXX_STANDARD 17
 )
 
-if (CMAKE_BUILD_TYPE STREQUAL "Release")
-	target_compile_options(${PROJECT_NAME} -02)
-endif (CMAKE_BUILD_TYPE STREQUAL "Release")
+#if (CMAKE_BUILD_TYPE STREQUAL "Release")
+#	target_compile_options(${PROJECT_NAME} -02)
+#endif (CMAKE_BUILD_TYPE STREQUAL "Release")
 
 # Checking if it is in visual studio for correct errors flags
-if (MSVC)
-	target_compile_options(${PROJECT_NAME} PUBLIC /W4)
-else()
-	target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Werror -Wpedantic)
-endif()
+#if (MSVC)
+#	target_compile_options(${PROJECT_NAME} PUBLIC -c -W4)
+#else()
+#	target_compile_options(${PROJECT_NAME} PUBLIC -c -Wall -Wextra -Werror -Wpedantic)
+#endif()
 
 # We need a CMake_Dir with some code to find external dependencies
 set(PROJECT_CMAKE_DIR "${PROJECT_SOURCE_DIR}/cmake")
