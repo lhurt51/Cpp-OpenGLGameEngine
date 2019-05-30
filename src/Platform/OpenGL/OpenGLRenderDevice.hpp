@@ -128,6 +128,10 @@ public:
 	uint32 createRenderTarget(uint32 texture, int32 width, int32 height, enum FramebufferAttachment attachment, uint32 attachmentNumber, uint32 miplevel);
 	uint32 releaseRenderTarget(uint32 fbo);
 
+	uint32 createVertexArray(const float** vertexData, const uint32* vertexElementSizes, uint32 numVertexComponents, uint32 numInstanceComponents, uint32 numVertices, const uint32* indices, uint32 numIndices, enum BufferUsage usage);
+	void updateVertexArrayBuffer(uint32 vao, uint32 bufferIndex, const void* data, uintptr dataSize);
+	uint32 releaseVertexArray(uint32 vao);
+
 	uint32 createSampler(enum SamplerFilter minFilter, enum SamplerFilter magFilter, enum SamplerWrapMode wrapU, enum SamplerWrapMode wrapV, float anisotropy);
 	uint32 releaseSampler(uint32 sampler);
 
