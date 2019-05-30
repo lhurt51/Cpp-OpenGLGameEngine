@@ -1,3 +1,4 @@
 3D Game Engine:
 - Need to find a way to make a game engine editor
 - Test cross-platform ability
+- Need to adding lib folders to GLEW & SDL2 for compile reasons!
