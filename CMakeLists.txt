@@ -95,18 +95,13 @@ endif (CMAKE_BUILD_TYPE STREQUAL "Release")
 
 # Checking if it is in visual studio for correct errors flags
 if (MSVC)
-	add_compile_options(-c -W4)
+	add_compile_options(-c /W4)
 else()
 	add_compile_options(-c -Wall -Wextra -Werror -Wpedantic)
 endif()
 
 # Define the executable
 add_executable(${PROJECT_NAME} ${HDRS} ${SRCS})
-
-set_property (TARGET ${PROJECT_NAME} PROPERTY
-  PUBLIC
-    CXX_STANDARD 17
-)
 
 #if (CMAKE_BUILD_TYPE STREQUAL "Release")
 #	target_compile_options(${PROJECT_NAME} -02)
@@ -154,6 +149,11 @@ target_link_libraries(${PROJECT_NAME}
 		${GLEW_LIBRARIES}
 		${SDL2_LIBRARIES}
 		${ASSIMP_LIBRARIES}
+)
+
+set_property (TARGET ${PROJECT_NAME} PROPERTY
+  PUBLIC
+    CXX_STANDARD 17
 )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${PROJECT_SOURCE_DIR}/bin)

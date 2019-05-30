@@ -176,16 +176,16 @@ public:
 		float zw2 = rs32[2];
 
 		SSEVector newScale = scaleVec.select(MASK_W, SSEVector::load1f(1.0f));
-		SSEVector* mat = (SEEVector*)dest;
+		SSEVector* mat = (SSEVector*)dest;
 		mat[0] = newScale * make((1.0f - (yy2 + zz2)), (xy2 - zw2), (xz2 + yw2), translation[0]);
-		mat[1] = newScale * make((xy2 + zw2), (1.0f - (xx2 + zz2), (yz2 - xw2)), translation[1]);
+		mat[1] = newScale * make((xy2 + zw2), (1.0f - (xx2 + zz2)), (yz2 - xw2), translation[1]);
 		mat[2] = newScale * make((xz2 - yw2), (yz2 + xw2), (1.0f - (xx2 + yy2)), translation[2]);
 		mat[3] = newScale * make(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	static FORCEINLINE SSEVector make(uint32 x, uint32 y, uint32 z, uint32 w)
 	{
-		union { __m128 vecf; __m128i veci; }; vecData;
+		union { __m128 vecf; __m128i veci; } vecData;
 		vecData.veci = _mm_setr_epi32(x, y, z, w);
 		SSEVector result;
 		result.data = vecData.vecf;
@@ -226,7 +226,7 @@ public:
 	static FORCEINLINE SSEVector load1f(float val)
 	{
 		SSEVector vec;
-		vec.data = _mm_set1_ps(vals);
+		vec.data = _mm_set1_ps(val);
 		return vec;
 	}
 
@@ -333,7 +333,7 @@ public:
 
 	FORCEINLINE SSEVector dot3(const SSEVector& other) const
 	{
-		const __m128 mul = _mm_nul_ps(data, other.data);
+		const __m128 mul = _mm_mul_ps(data, other.data);
 		const __m128 x = _mm_shuffle_ps(mul, mul, SSEVector_SHUFFLEMASK(0, 0, 0, 0));
 		const __m128 y = _mm_shuffle_ps(mul, mul, SSEVector_SHUFFLEMASK(1, 1, 1, 1));
 		const __m128 z = _mm_shuffle_ps(mul, mul, SSEVector_SHUFFLEMASK(2, 2, 2, 2));
@@ -367,7 +367,7 @@ public:
 			Math::pow((*this)[0], exp[0]),
 			Math::pow((*this)[1], exp[1]),
 			Math::pow((*this)[2], exp[2]),
-			Math::pow((*this)[3], exp[3]),
+			Math::pow((*this)[3], exp[3])
 		);
 	}
 
@@ -424,7 +424,7 @@ public:
 	FORCEINLINE SSEVector quatMul(const SSEVector& other) const
 	{
 		static const SSEVector mask(SSEVector::make(0.0f, 0.0f, 0.0f, -0.0f));
-		SSEVector comp1, comp2 comp3;
+		SSEVector comp1, comp2, comp3;
 		comp1.data = _mm_mul_ps(SSEVector_Swizzle(data, 0, 1, 2, 0), SSEVector_Swizzle(other.data, 3, 3, 3, 0));
 		comp2.data = _mm_mul_ps(SSEVector_Swizzle(data, 1, 2, 0, 1), SSEVector_Swizzle(other.data, 2, 0, 1, 1));
 		comp3.data = _mm_mul_ps(SSEVector_Swizzle(data, 2, 0, 1, 2), SSEVector_Swizzle(other.data, 1, 2, 0, 2));
@@ -469,14 +469,14 @@ public:
 		return vec;
 	}
 
-	FORCEINLINE SSEVector operator-(const SSEVector& other) const
+	FORCEINLINE SSEVector operator*(const SSEVector& other) const
 	{
 		SSEVector vec;
 		vec.data = _mm_mul_ps(data, other.data);
 		return vec;
 	}
 
-	FORCEINLINE SSEVector operator-(const SSEVector& other) const
+	FORCEINLINE SSEVector operator/(const SSEVector& other) const
 	{
 		SSEVector vec;
 		vec.data = _mm_div_ps(data, other.data);

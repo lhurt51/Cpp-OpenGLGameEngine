@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <stdio.h>
+#include <stdexcept>
 
 #include "../Platform/Platform.hpp"
 
@@ -65,7 +66,7 @@ typedef uintptr_t				uintptr;
 #define CONSTEXPR constexpr
 
 /*
-#if __cplusplus < 201103L
+#if __cplusplus < 201103L || __cplusplus_cli < 201103L || __cplusplus_winrt < 201103L
 	#define nullptr NULL
 	#define CONSTEXPR
 #else

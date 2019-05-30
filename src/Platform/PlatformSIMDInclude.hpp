@@ -2,6 +2,8 @@
 
 #include "Platform.hpp"
 
+#include <emmintrin.h>
+
 // Include correct headers for specific cpu architecture
 #if defined(SIMD_CPU_ARCH_x86) || defined(SIMD_CPU_ARCH_x86_64)
 	#if SIMD_SUPPORTED_LEVEL >= SIMD_LEVEL_x86_AVX2
