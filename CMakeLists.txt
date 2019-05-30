@@ -33,8 +33,8 @@ if (!MSVC)
 endif(!MSVC)
 
 # Setting the project to cxx_std_11
-# set(CMAKE_CXX_STANDARD 11)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Name and Version of the project
 project(3DEngineOpenGL LANGUAGES CXX)
@@ -53,44 +53,18 @@ endif ()
 
 # Lets LOAD app our headers!
 file(GLOB_RECURSE HDRS CONFIGURE_DEPENDS
-		${PROJECT_SOURCE_DIR}/src/*.h
-		${PROJECT_SOURCE_DIR}/src/*.hpp
+		${3DEngineOpenGL_SOURCE_DIR}/src/*.h
+		${3DEngineOpenGL_SOURCE_DIR}/src/*.hpp
 )
 
 # Lets LOAD app our sources!
 file(GLOB_RECURSE SRCS CONFIGURE_DEPENDS
-		${PROJECT_SOURCE_DIR}/src/*.cpp
-		${PROJECT_SOURCE_DIR}/src/*.c
+		${3DEngineOpenGL_SOURCE_DIR}/src/*.cpp
+		${3DEngineOpenGL_SOURCE_DIR}/src/*.c
 )
 
-foreach(FILE ${SRCS} ${HDRS}) 
-    # Get the directory of the source file
-    get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
-
-    # Remove common directory prefix to make the group
-    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/src" "" GROUP "${PARENT_DIR}")
-
-    # Make sure we are using windows slashes
-    string(REPLACE "/" "\\" GROUP "${GROUP}")
-
-    # Group into "Source Files" and "Header Files"
-    if ("${FILE}" MATCHES ".*\\.cpp")
-       set(GROUP "Source Files${GROUP}")
-	elseif ("${FILE}" MATCHES ".*\\.c")
-       set(GROUP "Source Files${GROUP}")
-    elseif("${FILE}" MATCHES ".*\\.h")
-       set(GROUP "Header Files${GROUP}")
-	elseif("${FILE}" MATCHES ".*\\.hpp")
-       set(GROUP "Header Files${GROUP}")
-    endif()
-
-    source_group("${GROUP}" FILES "${FILE}")
-endforeach(FILE ${SRCS} ${HDRS})
-
-include_directories (.)
-
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-	add_compile_options(${PROJECT_NAME} -02)
+	add_compile_options(3DEngineOpenGL -02)
 endif (CMAKE_BUILD_TYPE STREQUAL "Release")
 
 # Checking if it is in visual studio for correct errors flags
@@ -101,21 +75,10 @@ else()
 endif()
 
 # Define the executable
-add_executable(${PROJECT_NAME} ${HDRS} ${SRCS})
-
-#if (CMAKE_BUILD_TYPE STREQUAL "Release")
-#	target_compile_options(${PROJECT_NAME} -02)
-#endif (CMAKE_BUILD_TYPE STREQUAL "Release")
-
-# Checking if it is in visual studio for correct errors flags
-#if (MSVC)
-#	target_compile_options(${PROJECT_NAME} PUBLIC -c -W4)
-#else()
-#	target_compile_options(${PROJECT_NAME} PUBLIC -c -Wall -Wextra -Werror -Wpedantic)
-#endif()
+add_executable(3DEngineOpenGL ${HDRS} ${SRCS})
 
 # We need a CMake_Dir with some code to find external dependencies
-set(PROJECT_CMAKE_DIR "${PROJECT_SOURCE_DIR}/cmake")
+set(3DEngineOpenGL_CMAKE_DIR "${3DEngineOpenGL_SOURCE_DIR}/cmake")
 
 #######################################
 # LOOK for the packages that we need! #
@@ -125,18 +88,19 @@ set(PROJECT_CMAKE_DIR "${PROJECT_SOURCE_DIR}/cmake")
 find_package(OpenGL REQUIRED)
 
 # GLEW
-include(${PROJECT_CMAKE_DIR}/FindGLEW.cmake)
+include(${3DEngineOpenGL_CMAKE_DIR}/FindGLEW.cmake)
 
 # SDL2
-include(${PROJECT_CMAKE_DIR}/FindSDL2.cmake)
+include(${3DEngineOpenGL_CMAKE_DIR}/FindSDL2.cmake)
 
 # ASSIMP
-include(${PROJECT_CMAKE_DIR}/FindASSIMP.cmake)
+include(${3DEngineOpenGL_CMAKE_DIR}/FindASSIMP.cmake)
 
 # Define the include DIRs
 include_directories(
-		${PROJECT_SOURCE_DIR}/headers
-		${PROJECT_SOURCE_DIR}/sources
+		${3DEngineOpenGL_SOURCE_DIR}/headers
+		${3DEngineOpenGL_SOURCE_DIR}/sources
+		${3DEngineOpenGL_SOURCE_DIR}/src
 		${OPENGL_INCLUDE_DIRS}
 		${GLEW_INCLUDE_DIRS}
 		${SDL2_INCLUDE_DIRS}
@@ -144,16 +108,40 @@ include_directories(
 )
 
 # Define the link libraries
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(3DEngineOpenGL
 		${OPENGL_LIBRARIES}
 		${GLEW_LIBRARIES}
 		${SDL2_LIBRARIES}
 		${ASSIMP_LIBRARIES}
 )
 
-set_property (TARGET ${PROJECT_NAME} PROPERTY
-  PUBLIC
-    CXX_STANDARD 17
-)
+if (WIN32)
+	string(REPLACE "/" "\\" source_path_windows "${3DEngineOpenGL_SOURCE_DIR}/res")
+	string(REPLACE "/" "\\" build_path_windows "${3DEngineOpenGL_SOURCE_DIR}/res")
+	execute_process(COMMAND cmd.exe /c mklink /J "${build_path_windows}" "${source_path_windows}" RESULT_VARIABLE exitcode)
+else()
+	execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${3DEngineOpenGL_SOURCE_DIR}/res ${3DEngineOpenGL_BINARY_DIR}/res RESULT_VARIABLE exitcode)
+endif()
 
-install(TARGETS ${PROJECT_NAME} DESTINATION ${PROJECT_SOURCE_DIR}/bin)
+if(NOT ${exitcode} EQUAL 0)
+	message("SYMLINKING FAILED: ${exitcode}")
+	message("FAILED BACK TO COPYING")
+endif()
+
+# Copy only if the build folder contains outdated res folder. Only if symlink failed.
+file(GLOB_RECURSE RES RELATIVE ${3DEngineOpenGL_SOURCE_DIR}/res/ ${3DEngineOpenGL_SOURCE_DIR}/res/*.*)
+foreach(file IN LISTS RES)
+	configure_file(${3DEngineOpenGL_SOURCE_DIR}/res/${file} ${3DEngineOpenGL_BINARY_DIR}/res/${file} COPYONLY)
+endforeach()
+
+#Creating virt folders for VS
+if(MSVC_IDE)
+	foreach(source IN LISTS SRCS HDRS)
+		get_filename_component(source_path "${source}" PATH)
+		string(REPLACE "${3DEngineOpenGL_SOURCE_DIR}" "" relative_source_path "${source_paths}")
+		string(REPLACE "/" "\\" source_path_msvc "${relative_source_path}")
+		source_group("${source_path_msvc}" FILES "${source}")
+	endforeach()
+endif()
+
+install(TARGETS 3DEngineOpenGL DESTINATION ${3DEngineOpenGL_SOURCE_DIR}/bin)

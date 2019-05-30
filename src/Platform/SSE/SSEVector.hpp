@@ -278,6 +278,7 @@ public:
 		return SSEVector::load1f((*this)[index]);
 	}
 
+	/*
 	FORCEINLINE SSEVector swizzle(const uint32 x, const uint32 y, const uint32 z, const uint32 w) const
 	{
 		assertCheck(x <= 3);
@@ -288,6 +289,7 @@ public:
 		vec.data = _mm_shuffle_ps(data, data, SSEVector_SHUFFLEMASK(x, y, z, w));
 		return vec;
 	}
+	*/
 
 	FORCEINLINE SSEVector abs() const
 	{
@@ -496,7 +498,7 @@ public:
 	FORCEINLINE SSEVector operator==(const SSEVector& other) const
 	{
 		SSEVector vec;
-		vec.data = _mm_cmpeg_ps(data, other.data);
+		vec.data = _mm_cmpeq_ps(data, other.data);
 		return vec;
 	}
 

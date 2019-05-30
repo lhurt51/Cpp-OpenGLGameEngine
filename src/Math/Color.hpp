@@ -46,7 +46,7 @@ public:
 
 };
 
-FORCEINLINE Color::Color(float red, float green, float blue, float alpha = 1.0f) :
+FORCEINLINE Color::Color(float red, float green, float blue, float alpha) :
 	data(Vector::make(red, green, blue, alpha))
 {}
 
@@ -77,7 +77,7 @@ FORCEINLINE Color Color::operator+=(const Color& other)
 
 FORCEINLINE Color Color::operator-(const Color& other) const
 {
-	return Color(data - data.other);
+	return Color(data - other.data);
 }
 
 FORCEINLINE Color Color::operator-=(const Color& other)
@@ -118,7 +118,7 @@ FORCEINLINE bool Color::operator!=(const Color& other) const
 	return (data == other.data).isZero4f();
 }
 
-FORCEINLINE bool Color::equals(const Color& other, float errorMargin = 1.e-4f) const
+FORCEINLINE bool Color::equals(const Color& other, float errorMargin) const
 {
 	return (data.notEquals(other.data, errorMargin)).isZero4f();
 }

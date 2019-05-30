@@ -6,7 +6,7 @@
 
 SDLWindow::SDLWindow(const Application& app, int32 widthIn, int32 heightIn, const String& title) : width(widthIn), height(heightIn)
 {
-	RenderDevice::GlobalInit();
+	RenderDevice::globalInit();
 	window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 }
 

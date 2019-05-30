@@ -1,7 +1,7 @@
 #include "OpenGLRenderDevice.hpp"
 
-#include "../../Core/Common.hpp"
-#include "../../DataStructures/Array.hpp"
+#include "Core/Common.hpp"
+#include "DataStructures/Array.hpp"
 
 #include <SDL.h>
 #include <GL/glew.h>
@@ -17,7 +17,7 @@ OpenGLRenderDevice::OpenGLRenderDevice(Window& window) :
 	shaderVersion(""),
 	version(0),
 	boundFBO(0),
-	viewPortFBO(0),
+	viewportFBO(0),
 	boundVAO(0),
 	boundShader(0)
 {
@@ -233,36 +233,36 @@ String OpenGLRenderDevice::getShaderVersion()
 {
 	if (!shaderVersion.empty()) return shaderVersion;
 
-	uint32 version = getVersion();
+	uint32 cur_version = getVersion();
 
-	if (version >= 330)
+	if (cur_version >= 330)
 	{
 		shaderVersion = StringFuncs::ToString(version);
 	}
-	else if (version >= 320)
+	else if (cur_version >= 320)
 	{
 		shaderVersion = "150";
 	}
-	else if (version >= 310)
+	else if (cur_version >= 310)
 	{
 		shaderVersion = "140";
 	}
-	else if (version >= 300)
+	else if (cur_version >= 300)
 	{
 		shaderVersion = "130";
 	}
-	else if (version >= 210)
+	else if (cur_version >= 210)
 	{
 		shaderVersion = "120";
 	}
-	else if (version >= 200)
+	else if (cur_version >= 200)
 	{
 		shaderVersion = "110";
 	}
 	else
 	{
-		int32 majorVersion = version / 100;
-		int32 minorVersion = (version / 10) % 10;
+		int32 majorVersion = cur_version / 100;
+		int32 minorVersion = (cur_version / 10) % 10;
 		DEBUG_LOG(LOG_TYPE_RENDERER, LOG_ERROR, "Error: OpenGL Version %d.%d does not support shaders.\n", majorVersion, minorVersion);
 		return "";
 	}
