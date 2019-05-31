@@ -30,7 +30,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 # Set the compiler to clang++ if not visual studio
 if (!MSVC)
 	set(CMAKE_CXX_COMPILER clang++)
-endif(!MSVC)
+endif()
 
 # Setting the project to cxx_std_11
 set(CMAKE_CXX_STANDARD 17)
@@ -117,7 +117,7 @@ target_link_libraries(3DEngineOpenGL
 
 if (WIN32)
 	string(REPLACE "/" "\\" source_path_windows "${3DEngineOpenGL_SOURCE_DIR}/res")
-	string(REPLACE "/" "\\" build_path_windows "${3DEngineOpenGL_SOURCE_DIR}/res")
+	string(REPLACE "/" "\\" build_path_windows "${3DEngineOpenGL_BINARY_DIR}/res")
 	execute_process(COMMAND cmd.exe /c mklink /J "${build_path_windows}" "${source_path_windows}" RESULT_VARIABLE exitcode)
 else()
 	execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${3DEngineOpenGL_SOURCE_DIR}/res ${3DEngineOpenGL_BINARY_DIR}/res RESULT_VARIABLE exitcode)
